@@ -159,11 +159,11 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
         fs_version = 'v6.0'
         th3 = True
         shrink = 2
-        distance = 200 # 3T should be 50
+        distance = 50 # 3T should be 50, which is default in v6.0
         stop = 0.0001
         exvivo = True
         entorhinal = True
-        rb_date = "2014-08-21"
+        rb_date = "2016-05-10.vc700.gca"
     else:
         # 5.3 is default
         fsvernum = 5.3
