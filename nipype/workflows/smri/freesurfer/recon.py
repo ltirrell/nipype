@@ -163,7 +163,7 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
         stop = 0.0001
         exvivo = True
         entorhinal = True
-        rb_date = "2016-05-10.vc700.gca"
+        rb_date = "2016-05-10.vc700"
     else:
         # 5.3 is default
         fsvernum = 5.3
