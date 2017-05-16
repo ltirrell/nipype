@@ -458,7 +458,7 @@ def getdefaultconfig(exitonfail=False, rb_date='2008-03-26'):
             config['{0}_classifier3'.format(hemi)] = os.path.join(
                 config['fs_home'], 'average',
                 '{0}.DKTaparc.atlas.acfb40.noaparc.i12.2016-08-02.gcs'.format(hemi))
-    else
+    else:
         for hemi in ('lh', 'rh'):
             config['{0}_atlas'.format(hemi)] = os.path.join(
                 config['fs_home'], 'average',
