@@ -152,20 +152,33 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
 
     # check freesurfer version and set parameters
     fs_version_full = Info.version()
-    if fs_version_full and ('v6.0' in fs_version_full or
-                                    'dev' in fs_version_full):
-        # assuming that dev is 6.0
+    if fs_version_full and ('2beb96c' in fs_version_full or
+                            'dev' in fs_version_full):
+        # assuming that dev is from after v6.0 release (January 2017)
         fsvernum = 6.0
         fs_version = 'v6.0'
         th3 = True
-        shrink = 2
-        distance = 200 # 3T should be 50
-        stop = 0.0001
+        shrink = None
+        distance = 50 # 3T should be 50, which is by default. 1.5 T is 200
+        stop = None
         exvivo = True
         entorhinal = True
-        rb_date = "2014-08-21"
+        rb_date =  '2016-05-10.vc700'
+        mprage = True
+    if fs_version_full and 'v6' in fs_version_full:
+        # this is for beta versions of v6, from before the stable6 release
+        fsvernum = 6.0
+        fs_version = 'v6.0'
+        th3 = True
+        shrink = None
+        distance = 50 # 3T should be 50, which is by default. 1.5 T is 200
+        stop = None
+        exvivo = True
+        entorhinal = True
+        rb_date =  '2016-05-10.vc700'
+        mprage = False
     else:
-        # 5.3 is default
+        # 5.3 is default 
         fsvernum = 5.3
         if fs_version_full:
             if 'v5.3' in fs_version_full:
@@ -177,14 +190,15 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
                              "set or if you are using an older version of "
                              "FreeSurfer"))
         else:
-            fs_version = 5.3 # assume version 5.3
+            fs_version = 'v5.3' # assume version 5.3
         th3 = False
         shrink = None
         distance = 50
         stop = None
         exvivo = False
         entorhinal = False
-        rb_date = "2008-03-26"
+        rb_date = '2008-03-26'
+        mprage = False
 
     logger.info("FreeSurfer Version: {0}".format(fs_version))
 

@@ -344,7 +344,7 @@ def create_AutoRecon1(name="AutoRecon1", longitudinal=False, distance=None,
         intensity_correction = pe.Node(
             MNIBiasCorrection(), name="Intensity_Correction")
         intensity_correction.inputs.out_file = 'nu.mgz'
-        intensity_correction.inputs.iterations = 2
+        intensity_correction.inputs.iterations = 1
         ar1_wf.connect([(add_xform_to_orig, intensity_correction, [('out_file', 'in_file')]),
                         (copy_transform, intensity_correction, [('out_file', 'transform')])])
 
@@ -368,12 +368,9 @@ def create_AutoRecon1(name="AutoRecon1", longitudinal=False, distance=None,
     mri_normalize = pe.Node(Normalize(), name="Normalize_T1")
     mri_normalize.inputs.gradient = 1
     mri_normalize.inputs.out_file = 'T1.mgz'
+    mri_normalize.inputs.args = '-mprage'
 
-    if fsvernum < 6:
-        ar1_wf.connect([(add_to_header_nu, mri_normalize, [('out_file', 'in_file')])])
-    else:
-        ar1_wf.connect([(add_xform_to_orig_nu, mri_normalize, [('out_file', 'in_file')])])
-
+    ar1_wf.connect([(add_to_header_nu, mri_normalize, [('out_file', 'in_file')])])
     ar1_wf.connect([(copy_transform, mri_normalize, [('out_file', 'transform')])])
 
     # Skull Strip
