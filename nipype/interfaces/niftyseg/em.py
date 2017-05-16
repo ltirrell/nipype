@@ -14,7 +14,8 @@ See the docstrings of the individual classes for examples.
 Change directory to provide relative paths for doctests
     >>> import os
     >>> filepath = os.path.dirname( os.path.realpath( __file__ ) )
-    >>> datadir = os.path.realpath(os.path.join(filepath, '../../testing/data'))
+    >>> datadir = os.path.realpath(os.path.join(filepath, '../../testing/\
+data'))
     >>> os.chdir(datadir)
 """
 
@@ -117,9 +118,8 @@ class EM(NiftySegCommand):
     it's simplest form, it takes in one 2D or 3D image and segments it in n
     classes.
 
-    For source code, see http://cmictig.cs.ucl.ac.uk/wiki/index.php/NiftySeg
-    For Documentation, see:
-        http://cmictig.cs.ucl.ac.uk/wiki/index.php/NiftySeg_documentation
+    `Source code <http://cmictig.cs.ucl.ac.uk/wiki/index.php/NiftySeg>`_ |
+    `Documentation <http://cmictig.cs.ucl.ac.uk/wiki/index.php/NiftySeg_documentation>`_
 
     Examples
     --------
@@ -128,8 +128,7 @@ class EM(NiftySegCommand):
     >>> node.inputs.in_file = 'im1.nii'
     >>> node.inputs.no_prior = 4
     >>> node.cmdline  # doctest: +ALLOW_UNICODE
-    'seg_EM -in im1.nii -nopriors 4 -bc_out im1_bc_em.nii.gz \
--out im1_em.nii.gz -out_outlier im1_outlier_em.nii.gz'
+    'seg_EM -in im1.nii -nopriors 4 -bc_out im1_bc_em.nii.gz -out im1_em.nii.gz -out_outlier im1_outlier_em.nii.gz'
 
     """
     _cmd = get_custom_path('seg_EM', env_dir='NIFTYSEGDIR')

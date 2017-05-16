@@ -8,7 +8,8 @@ that can be performed with the seg_LabFusion command-line program.
 Change directory to provide relative paths for doctests
     >>> import os
     >>> filepath = os.path.dirname( os.path.realpath( __file__ ) )
-    >>> datadir = os.path.realpath(os.path.join(filepath, '../../testing/data'))
+    >>> datadir = os.path.realpath(os.path.join(filepath, '../../testing/\
+data'))
     >>> os.chdir(datadir)
 """
 
@@ -133,9 +134,8 @@ class LabelFusion(NiftySegCommand):
     FusedSegmentation.nii -STEPS 2 15 TargetImage.nii \
     4D_Propagated_Intensities.nii
 
-    For source code, see http://cmictig.cs.ucl.ac.uk/wiki/index.php/NiftySeg
-    For Documentation, see:
-        http://cmictig.cs.ucl.ac.uk/wiki/index.php/NiftySeg_documentation
+    `Source code <http://cmictig.cs.ucl.ac.uk/wiki/index.php/NiftySeg>`_ |
+    `Documentation <http://cmictig.cs.ucl.ac.uk/wiki/index.php/NiftySeg_documentation>`_
 
     Examples
     --------
@@ -148,8 +148,7 @@ class LabelFusion(NiftySegCommand):
     >>> node.inputs.template_num = 2
     >>> node.inputs.classifier_type = 'STEPS'
     >>> node.cmdline  # doctest: +ALLOW_UNICODE
-    'seg_LabFusion -in im1.nii -STEPS 2.000000 2 im2.nii im3.nii -out \
-im1_steps.nii'
+    'seg_LabFusion -in im1.nii -STEPS 2.000000 2 im2.nii im3.nii -out im1_steps.nii'
 
     """
     _cmd = get_custom_path('seg_LabFusion', env_dir='NIFTYSEGDIR')
@@ -280,7 +279,6 @@ class CalcTopNCCInputSpec(CommandLineInputSpec):
 
     mask_file = File(argstr='-mask %s',
                      exists=True,
-                     mandatory=False,
                      desc='Filename of the ROI for label fusion')
 
 
