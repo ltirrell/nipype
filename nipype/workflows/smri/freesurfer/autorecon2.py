@@ -59,17 +59,10 @@ def create_AutoRecon2(name="AutoRecon2", longitudinal=False,
             MNIBiasCorrection(), name="Intensity_Correction")
         intensity_correction.inputs.out_file = 'nu.mgz'
         ar2_wf.connect([(inputspec, intensity_correction, [('orig', 'in_file'),
-                                                           ('brainmask', 'mask'),
                                                            ('transform', 'transform')])])
 
         # intensity correction parameters are more specific in 6+
-        intensity_correction.inputs.iterations = 1
-        intensity_correction.inputs.protocol_iterations = 1000
-        if stop:
-            intensity_correction.inputs.stop = stop
-        if shrink:
-            intensity_correction.inputs.shrink =  shrink
-        intensity_correction.inputs.distance = distance
+        intensity_correction.inputs.iterations = 2
 
         add_to_header_nu = pe.Node(AddXFormToHeader(), name="Add_XForm_to_NU")
         add_to_header_nu.inputs.copy_name = True
@@ -173,18 +166,6 @@ def create_AutoRecon2(name="AutoRecon2", longitudinal=False,
     else:
         ar2_wf.connect([(inputspec, remove_neck, [('nu', 'in_file')])])
 
-    # SkullLTA (EM Registration, with Skull)
-    # Computes transform to align volume mri/nu_noneck.mgz with GCA volume
-    # possessing the skull.
-    em_reg_withskull = pe.Node(EMRegister(), name='EM_Register_withSkull')
-    em_reg_withskull.inputs.skull = True
-    em_reg_withskull.inputs.out_file = 'talairach_with_skull_2.lta'
-    if plugin_args:
-        em_reg_withskull.plugin_args = plugin_args
-    ar2_wf.connect([(align_transform, em_reg_withskull, [('out_file', 'transform')]),
-                    (remove_neck, em_reg_withskull, [('out_file', 'in_file')]),
-                    (inputspec, em_reg_withskull, [('num_threads', 'num_threads'),
-                                                   ('reg_template_withskull', 'template')])])
 
     # SubCort Seg (CA Label)
     # Labels subcortical structures, based in GCA model.
@@ -290,6 +271,8 @@ def create_AutoRecon2(name="AutoRecon2", longitudinal=False,
 
     wm_seg = pe.Node(SegmentWM(), name="Segment_WM")
     wm_seg.inputs.out_file = 'wm.seg.mgz'
+    if mprage:
+        wm_seg.inputs.args = '-mprage'
     ar2_wf.connect([(normalization2, wm_seg, [('out_file', 'in_file')])
                     ])
 
@@ -393,6 +376,7 @@ def create_AutoRecon2(name="AutoRecon2", longitudinal=False,
             make_surfaces.inputs.maximum = 3.5
             make_surfaces.inputs.longitudinal = True
             make_surfaces.inputs.copy_inputs = True
+
 
             hemi_wf.connect([(copy_template_orig_white, make_surfaces, [('out_file', 'orig_white')]),
                              (copy_template_white, make_surfaces, [('out_file', 'in_orig')])])
@@ -540,6 +524,7 @@ def create_AutoRecon2(name="AutoRecon2", longitudinal=False,
             make_surfaces.inputs.white_only = True
             make_surfaces.inputs.hemisphere = hemisphere
             make_surfaces.inputs.copy_inputs = True
+            make_surfaces.inputs.white = 'white.aparc'
             hemi_wf.connect([(remove_intersection, make_surfaces, [('out_file', 'in_orig')]),
                              (hemi_inputspec, make_surfaces, [('aseg', 'in_aseg'),
                                                               ('t1', 'in_T1'),
@@ -676,7 +661,6 @@ def create_AutoRecon2(name="AutoRecon2", longitudinal=False,
                'ctrl_pts',
                'tal_m3z',
                'nu_noneck',
-               'talskull2',
                'aseg_noCC',
                'cc_up',
                'aseg_auto',
@@ -706,7 +690,6 @@ def create_AutoRecon2(name="AutoRecon2", longitudinal=False,
                     (ca_normalize, outputspec, [('control_points', 'ctrl_pts')]),
                     (ca_register, outputspec, [('out_file', 'tal_m3z')]),
                     (remove_neck, outputspec, [('out_file', 'nu_noneck')]),
-                    (em_reg_withskull, outputspec, [('out_file', 'talskull2')]),
                     (ca_label, outputspec, [('out_file', 'aseg_noCC')]),
                     (segment_cc, outputspec, [('out_rotation', 'cc_up'),
                                               ('out_file', 'aseg_auto')]),

@@ -172,7 +172,7 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
             ar3_pial.inputs.white = 'NOWRITE'
             hemi_wf.connect(hemi_inputspec1, 'white', ar3_pial, 'in_white')
         else:
-            ar3_pial.inputs.no_white = True
+            ar3_pial.inputs.no_white = False
             hemi_wf.connect([(hemi_inputspec1, ar3_pial, [('white', 'orig_pial'),
                                                           ('white', 'orig_white')])])
 

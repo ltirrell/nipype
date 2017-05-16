@@ -368,7 +368,8 @@ def create_AutoRecon1(name="AutoRecon1", longitudinal=False, distance=None,
     mri_normalize = pe.Node(Normalize(), name="Normalize_T1")
     mri_normalize.inputs.gradient = 1
     mri_normalize.inputs.out_file = 'T1.mgz'
-    mri_normalize.inputs.args = '-mprage'
+    if mprage:
+        mri_normalize.inputs.args = '-mprage'
 
     ar1_wf.connect([(add_to_header_nu, mri_normalize, [('out_file', 'in_file')])])
     ar1_wf.connect([(copy_transform, mri_normalize, [('out_file', 'transform')])])
@@ -385,10 +386,9 @@ def create_AutoRecon1(name="AutoRecon1", longitudinal=False, distance=None,
         if plugin_args:
             mri_em_register.plugin_args = plugin_args
 
-        if fsvernum < 6:
-            ar1_wf.connect(add_to_header_nu, 'out_file', mri_em_register, 'in_file')
-        else:
-            ar1_wf.connect(add_xform_to_orig_nu, 'out_file', mri_em_register, 'in_file')
+
+        ar1_wf.connect(add_to_header_nu, 'out_file', mri_em_register, 'in_file')
+
 
         ar1_wf.connect([(inputspec, mri_em_register, [('num_threads', 'num_threads'),
                                                       ('reg_template_withskull', 'template')])])

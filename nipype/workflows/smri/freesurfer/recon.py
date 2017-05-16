@@ -152,31 +152,31 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
 
     # check freesurfer version and set parameters
     fs_version_full = Info.version()
-    if fs_version_full and ('2beb96c' in fs_version_full or
-                            'dev' in fs_version_full):
-        # assuming that dev is from after v6.0 release (January 2017)
-        fsvernum = 6.0
-        fs_version = 'v6.0'
-        th3 = True
-        shrink = None
-        distance = 50 # 3T should be 50, which is by default. 1.5 T is 200
-        stop = None
-        exvivo = True
-        entorhinal = True
-        rb_date =  '2016-05-10.vc700'
-        mprage = True
-    if fs_version_full and 'v6' in fs_version_full:
+    if fs_version_full:
+        if ('2beb96c' in fs_version_full) or ('dev' in fs_version_full):
+            # assuming that dev is from after v6.0 release (January 2017)
+            fsvernum = 6.0
+            fs_version = 'v6.0'
+            th3 = True
+            shrink = None
+            distance = 50 # 3T should be 50, which is by default. 1.5 T is 200
+            stop = None
+            exvivo = True
+            entorhinal = True
+            rb_date =  '2016-05-10.vc700'
+            mprage = True
+        if 'v6' in fs_version_full:
         # this is for beta versions of v6, from before the stable6 release
-        fsvernum = 6.0
-        fs_version = 'v6.0'
-        th3 = True
-        shrink = None
-        distance = 50 # 3T should be 50, which is by default. 1.5 T is 200
-        stop = None
-        exvivo = True
-        entorhinal = True
-        rb_date =  '2016-05-10.vc700'
-        mprage = False
+            fsvernum = 6.0
+            fs_version = 'v6.0_beta'
+            th3 = True
+            shrink = 2
+            distance = 200  # 3T should be 50
+            stop = 0.0001
+            exvivo = True
+            entorhinal = True
+            rb_date = "2014-08-21"
+            mprage = False
     else:
         # 5.3 is default 
         fsvernum = 5.3
@@ -431,7 +431,6 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
                                               ('ctrl_pts', 'mri.@ctrl_pts'),
                                               ('tal_m3z', 'mri.transforms.@tal_m3z'),
                                               ('nu_noneck', 'mri.@nu_noneck'),
-                                              ('talskull2', 'mri.transforms.@talskull2'),
                                               ('aseg_noCC', 'mri.@aseg_noCC'),
                                               ('cc_up', 'mri.transforms.@cc_up'),
                                               ('aseg_auto', 'mri.@aseg_auto'),

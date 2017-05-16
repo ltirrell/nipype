@@ -2106,8 +2106,12 @@ class MakeSurfaces(FSCommand):
         label_dir = os.path.join(
             self.inputs.subjects_dir, self.inputs.subject_id, 'label')
         if not self.inputs.no_white:
-            outputs["out_white"] = os.path.join(
-                dest_dir, str(self.inputs.hemisphere) + '.white')
+            if self.inputs.white != 'NOWRITE':
+                outputs["out_white"] = os.path.join(
+                    dest_dir, str(self.inputs.hemisphere) + str(self.inputs.white))
+            else:
+                outputs["out_white"] = os.path.join(
+                    dest_dir, str(self.inputs.hemisphere) + '.white')
         # The curv and area files must have the hemisphere names as a prefix
         outputs["out_curv"] = os.path.join(
             dest_dir, str(self.inputs.hemisphere) + '.curv')

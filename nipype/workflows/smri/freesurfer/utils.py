@@ -443,20 +443,35 @@ def getdefaultconfig(exitonfail=False, rb_date='2008-03-26'):
     config['registration_template'] = os.path.join(config['fs_home'], 'average',
                                                    'RB_all_{0}.gca'.format(rb_date))
     config['registration_template_withskull'] = os.path.join(config['fs_home'], 'average',
-                                                             'RB_all_withskull_{0}.gca'.format(rb_date))
-    for hemi in ('lh', 'rh'):
-        config['{0}_atlas'.format(hemi)] = os.path.join(
-            config['fs_home'], 'average',
-            '{0}.average.curvature.filled.buckner40.tif'.format(hemi))
-        config['{0}_classifier'.format(hemi)] = os.path.join(
-            config['fs_home'], 'average',
-            '{0}.curvature.buckner40.filled.desikan_killiany.2010-03-25.gcs'.format(hemi))
-        config['{0}_classifier2'.format(hemi)] = os.path.join(
-            config['fs_home'], 'average',
-            '{0}.destrieux.simple.2009-07-29.gcs'.format(hemi))
-        config['{0}_classifier3'.format(hemi)] = os.path.join(
-            config['fs_home'], 'average',
-            '{0}.DKTatlas40.gcs'.format(hemi))
+                                                         'RB_all_withskull_{0}.gca'.format(rb_date))
+    if fsvernum >= 6 and 'beta' not in fs_version:
+        for hemi in ('lh', 'rh'):
+            config['{0}_atlas'.format(hemi)] = os.path.join(
+                config['fs_home'], 'average',
+                '{0}.folding.atlas.acfb40.noaparc.i12.2016-08-02.tif'.format(hemi))
+            config['{0}_classifier'.format(hemi)] = os.path.join(
+                config['fs_home'], 'average',
+                '{0}.DKaparc.atlas.acfb40.noaparc.i12.2016-08-02.gcs'.format(hemi))
+            config['{0}_classifier2'.format(hemi)] = os.path.join(
+                config['fs_home'], 'average',
+                '{0}.CDaparc.atlas.acfb40.noaparc.i12.2016-08-02.gcs'.format(hemi))
+            config['{0}_classifier3'.format(hemi)] = os.path.join(
+                config['fs_home'], 'average',
+                '{0}.DKTaparc.atlas.acfb40.noaparc.i12.2016-08-02.gcs'.format(hemi))
+    else
+        for hemi in ('lh', 'rh'):
+            config['{0}_atlas'.format(hemi)] = os.path.join(
+                config['fs_home'], 'average',
+                '{0}.average.curvature.filled.buckner40.tif'.format(hemi))
+            config['{0}_classifier'.format(hemi)] = os.path.join(
+                config['fs_home'], 'average',
+                '{0}.curvature.buckner40.filled.desikan_killiany.2010-03-25.gcs'.format(hemi))
+            config['{0}_classifier2'.format(hemi)] = os.path.join(
+                config['fs_home'], 'average',
+                '{0}.destrieux.simple.2009-07-29.gcs'.format(hemi))
+            config['{0}_classifier3'.format(hemi)] = os.path.join(
+                config['fs_home'], 'average',
+                '{0}.DKTatlas40.gcs'.format(hemi))
     config['LookUpTable'] = os.path.join(config['fs_home'], 'ASegStatsLUT.txt')
     config['WMLookUpTable'] = os.path.join(config['fs_home'], 'WMParcStatsLUT.txt')
     config['AvgColorTable'] = os.path.join(config['fs_home'], 'average', 'colortable_BA.txt')
