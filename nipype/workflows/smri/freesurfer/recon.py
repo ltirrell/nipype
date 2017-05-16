@@ -165,7 +165,7 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
             entorhinal = True
             rb_date =  '2016-05-10.vc700'
             mprage = True
-        if 'v6' in fs_version_full:
+        elif 'v6' in fs_version_full:
         # this is for beta versions of v6, from before the stable6 release
             fsvernum = 6.0
             fs_version = 'v6.0_beta'
