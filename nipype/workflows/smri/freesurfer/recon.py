@@ -218,12 +218,14 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
                   lookup_table=None,
                   wm_lookup_table=None,
                   awk_file=None,
+                  fsvernum=fsvernum
                   rb_date=None):
         """Set optional configurations to the default"""
         from nipype.workflows.smri.freesurfer.utils import getdefaultconfig
         def checkarg(arg, default):
             """Returns the value if defined; otherwise default"""
             if arg:
+                return arg
                 return arg
             else:
                 return default
@@ -241,15 +243,13 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
         lh_classifier3 = checkarg(lh_classifier3, defaultconfig['lh_classifier3'])
         rh_classifier3 = checkarg(rh_classifier3, defaultconfig['rh_classifier3'])
         src_subject_id = checkarg(src_subject_id, defaultconfig['src_subject_id'])
-        src_subject_dir = checkarg(src_subject_dir, defaultconfig['src_subject_dir'])
-        color_table = checkarg(color_table, defaultconfig['AvgColorTable'])
         lookup_table = checkarg(lookup_table, defaultconfig['LookUpTable'])
         wm_lookup_table = checkarg(wm_lookup_table, defaultconfig['WMLookUpTable'])
         awk_file = checkarg(awk_file, defaultconfig['awk_file'])
         return reg_template, reg_template_withskull, lh_atlas, rh_atlas, \
             lh_classifier1, rh_classifier1, lh_classifier2, rh_classifier2, \
             lh_classifier3, rh_classifier3, src_subject_id, src_subject_dir, \
-            color_table, lookup_table, wm_lookup_table, awk_file
+            color_table, lookup_table, wm_lookup_table, awk_file, fsvernum
 
     # list of params to check
     params = ['reg_template',
@@ -267,7 +267,8 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
               'color_table',
               'lookup_table',
               'wm_lookup_table',
-              'awk_file']
+              'awk_file',
+              'fsvernum']
 
     config_node = pe.Node(niu.Function(params + ['rb_date'],
                                        params,
