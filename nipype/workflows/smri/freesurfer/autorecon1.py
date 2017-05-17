@@ -339,7 +339,7 @@ def create_AutoRecon1(name="AutoRecon1", longitudinal=False, distance=None,
         ar1_wf.connect([(awk_logfile, tal_qc, [('log_file', 'log_file')])])
 
 
-    if fsvernum < 6 or fs_version = 'v6.0':
+    if fsvernum < 6 or fs_version == 'v6.0':
         # intensity correction is performed before normalization
         intensity_correction = pe.Node(
             MNIBiasCorrection(), name="Intensity_Correction")
