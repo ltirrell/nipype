@@ -282,7 +282,7 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
     # create AutoRecon1
     ar1_wf, ar1_outputs = create_AutoRecon1(plugin_args=plugin_args, stop=stop,
                                             distance=distance, shrink=shrink,
-                                            fsvernum=fsvernum, mprage=mprage)
+                                            fsvernum=fsvernum, mprage=mprage, fs_version=fs_version)
     # connect inputs for AutoRecon1
     reconall.connect([(inputspec, ar1_wf, [('T1_files', 'inputspec.T1_files'),
                                            ('T2_file', 'inputspec.T2_file'),

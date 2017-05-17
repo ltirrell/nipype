@@ -37,7 +37,7 @@ def checkT1s(T1_files, cw256=False):
 
 def create_AutoRecon1(name="AutoRecon1", longitudinal=False, distance=None,
                       custom_atlas=None, plugin_args=None, shrink=None, stop=None,
-                      fsvernum=5.3, mprage=False):
+                      fsvernum=5.3, mprage=False, fs_version='v5.3'):
     """Creates the AutoRecon1 workflow in nipype.
 
     Inputs::
