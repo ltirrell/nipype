@@ -219,7 +219,7 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
                   wm_lookup_table=None,
                   awk_file=None,
                   fsvernum=None,
-                  fs_version=None
+                  fs_version=None,
                   rb_date=None):
         """Set optional configurations to the default"""
         from nipype.workflows.smri.freesurfer.utils import getdefaultconfig
