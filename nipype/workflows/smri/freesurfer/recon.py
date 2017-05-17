@@ -227,7 +227,6 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
             """Returns the value if defined; otherwise default"""
             if arg:
                 return arg
-                return arg
             else:
                 return default
         defaultconfig = getdefaultconfig(exitonfail=True, fsvernum=fsvernum, fs_version=fs_version, rb_date=rb_date)
@@ -250,7 +249,7 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
         return reg_template, reg_template_withskull, lh_atlas, rh_atlas, \
             lh_classifier1, rh_classifier1, lh_classifier2, rh_classifier2, \
             lh_classifier3, rh_classifier3, src_subject_id, src_subject_dir, \
-            color_table, lookup_table, wm_lookup_table, awk_file, fsvernum
+            color_table, lookup_table, wm_lookup_table, awk_file
 
     # list of params to check
     params = ['reg_template',
