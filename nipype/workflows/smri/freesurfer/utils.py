@@ -421,7 +421,7 @@ def mkdir_p(path):
         else:
             raise
 
-def getdefaultconfig(exitonfail=False, rb_date='2008-03-26'):
+def getdefaultconfig(exitonfail=False, fsvernum=5.3, fs_version='v5.3', rb_date='2008-03-26'):
     config = { 'custom_atlas' : None,
                'cw256' : False,
                'field_strength' : '1.5T',

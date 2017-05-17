@@ -218,7 +218,8 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
                   lookup_table=None,
                   wm_lookup_table=None,
                   awk_file=None,
-                  fsvernum=fsvernum,
+                  fsvernum=None,
+                  fs_version=None
                   rb_date=None):
         """Set optional configurations to the default"""
         from nipype.workflows.smri.freesurfer.utils import getdefaultconfig
@@ -229,7 +230,7 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
                 return arg
             else:
                 return default
-        defaultconfig = getdefaultconfig(exitonfail=True, rb_date=rb_date)
+        defaultconfig = getdefaultconfig(exitonfail=True, fsvernum=fsvernum, fs_version=fs_version, rb_date=rb_date)
         # set the default template and classifier files
         reg_template = checkarg(reg_template, defaultconfig['registration_template'])
         reg_template_withskull = checkarg(reg_template_withskull,
@@ -267,15 +268,16 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
               'color_table',
               'lookup_table',
               'wm_lookup_table',
-              'awk_file',
-              'fsvernum']
+              'awk_file']
 
-    config_node = pe.Node(niu.Function(params + ['rb_date'],
+    config_node = pe.Node(niu.Function(params + ['fsvernum', 'fs_version', 'rb_date'],
                                        params,
                                        setconfig),
                           name="config")
 
     config_node.inputs.rb_date = rb_date
+    config_node.inputs.fsvernum = fsvernum
+    config_node.inputs.fs_version = fs_version
 
     for param in params:
         reconall.connect(inputspec, param, config_node, param)
