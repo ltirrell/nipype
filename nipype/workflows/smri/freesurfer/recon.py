@@ -178,7 +178,7 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
             rb_date = "2014-08-21"
             mprage = False
     else:
-        # 5.3 is default 
+        # 5.3 is default
         fsvernum = 5.3
         if fs_version_full:
             if 'v5.3' in fs_version_full:
@@ -282,7 +282,7 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
     # create AutoRecon1
     ar1_wf, ar1_outputs = create_AutoRecon1(plugin_args=plugin_args, stop=stop,
                                             distance=distance, shrink=shrink,
-                                            fsvernum=fsvernum)
+                                            fsvernum=fsvernum, mprage=mprage)
     # connect inputs for AutoRecon1
     reconall.connect([(inputspec, ar1_wf, [('T1_files', 'inputspec.T1_files'),
                                            ('T2_file', 'inputspec.T2_file'),
@@ -294,7 +294,7 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
                                              ('awk_file', 'inputspec.awk_file')])])
     # create AutoRecon2
     ar2_wf, ar2_outputs = create_AutoRecon2(plugin_args=plugin_args, fsvernum=fsvernum,
-                                            stop=stop, shrink=shrink, distance=distance)
+                                            stop=stop, shrink=shrink, distance=distance, mprage=mprage)
     # connect inputs for AutoRecon2
     reconall.connect([(inputspec, ar2_wf, [('num_threads', 'inputspec.num_threads')]),
                       (config_node, ar2_wf, [('reg_template_withskull',
