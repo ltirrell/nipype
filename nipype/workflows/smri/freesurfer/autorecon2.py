@@ -524,7 +524,7 @@ def create_AutoRecon2(name="AutoRecon2", longitudinal=False,
             make_surfaces.inputs.white_only = True
             make_surfaces.inputs.hemisphere = hemisphere
             make_surfaces.inputs.copy_inputs = True
-            make_surfaces.inputs.white = 'white.aparc'
+            make_surfaces.inputs.white = 'white.preaparc'
             hemi_wf.connect([(remove_intersection, make_surfaces, [('out_file', 'in_orig')]),
                              (hemi_inputspec, make_surfaces, [('aseg', 'in_aseg'),
                                                               ('t1', 'in_T1'),

@@ -2108,7 +2108,8 @@ class MakeSurfaces(FSCommand):
         if not self.inputs.no_white:
             if self.inputs.white != 'NOWRITE':
                 outputs["out_white"] = os.path.join(
-                    dest_dir, str(self.inputs.hemisphere) + str(self.inputs.white))
+                    dest_dir, '{}.{}'.format(str(self.inputs.hemisphere),
+                                             str(self.inputs.white)))
             else:
                 outputs["out_white"] = os.path.join(
                     dest_dir, str(self.inputs.hemisphere) + '.white')
