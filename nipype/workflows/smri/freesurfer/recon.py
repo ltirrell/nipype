@@ -243,6 +243,8 @@ def create_reconall_workflow(name="ReconAll", plugin_args=None):
         lh_classifier3 = checkarg(lh_classifier3, defaultconfig['lh_classifier3'])
         rh_classifier3 = checkarg(rh_classifier3, defaultconfig['rh_classifier3'])
         src_subject_id = checkarg(src_subject_id, defaultconfig['src_subject_id'])
+        src_subject_dir = checkarg(src_subject_dir, defaultconfig['src_subject_dir'])
+        color_table = checkarg(color_table, defaultconfig['AvgColorTable'])
         lookup_table = checkarg(lookup_table, defaultconfig['LookUpTable'])
         wm_lookup_table = checkarg(wm_lookup_table, defaultconfig['WMLookUpTable'])
         awk_file = checkarg(awk_file, defaultconfig['awk_file'])

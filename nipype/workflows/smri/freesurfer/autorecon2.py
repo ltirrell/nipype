@@ -242,7 +242,8 @@ def create_AutoRecon2(name="AutoRecon2", longitudinal=False,
     brain.mgz volume. The -autorecon2-cp stage begins here.
     """
     normalization2 = pe.Node(Normalize(), name="Normalization2")
-    normalization2.inputs.args = '-mprage'
+    if mprage:
+        normalization2.inputs.args = '-mprage'
     normalization2.inputs.out_file = 'brain.mgz'
 
     ar2_wf.connect([(copy_cc, normalization2, [('out_file', 'segmentation')]),
