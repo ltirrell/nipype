@@ -283,8 +283,7 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
     ar3_wf.connect([(ar3_lh_wf1, volume_mask, [('outputspec.pial', 'lh_pial')],
                                               [('outputspec.white', 'lh.white')]),
                     (ar3_rh_wf1, volume_mask, [('outputspec.pial', 'rh_pial')],
-                                              [('outputspec.white', 'rh.white')])
-                    ])
+                                              [('outputspec.white', 'rh.white')])])
 
     if fsvernum >= 6:
         ar3_wf.connect([(inputspec, volume_mask, [('aseg_presurf', 'in_aseg')])])
