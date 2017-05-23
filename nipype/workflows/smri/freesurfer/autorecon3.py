@@ -17,8 +17,8 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
                                                   'rh_inflated',
                                                   'lh_smoothwm',
                                                   'rh_smoothwm',
-                                                  'lh_white',
-                                                  'rh_white',
+                                                  'lh_white_preaparc',
+                                                  'rh_white_preaparc',
                                                   'lh_white_H',
                                                   'rh_white_H',
                                                   'lh_white_K',
@@ -66,7 +66,7 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
     for hemisphere, hemi_wf in [('lh', ar3_lh_wf1), ('rh', ar3_rh_wf1)]:
         hemi_inputspec1 = pe.Node(IdentityInterface(fields=['inflated',
                                                             'smoothwm',
-                                                            'white',
+                                                            'white_preaparc',
                                                             'cortex_label',
                                                             'orig',
                                                             'aseg_presurf',
@@ -121,7 +121,7 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
 
         ar3_jacobian = pe.Node(Jacobian(), name="Jacobian")
         ar3_jacobian.inputs.out_file = '{0}.jacobian_white'.format(hemisphere)
-        hemi_wf.connect([(hemi_inputspec1, ar3_jacobian, [('white', 'in_origsurf')]),
+        hemi_wf.connect([(hemi_inputspec1, ar3_jacobian, [('white_preaparc', 'in_origsurf')]),
                          (ar3_surfreg, ar3_jacobian, [('out_file', 'in_mappedsurf')])
                        ])
 
@@ -173,8 +173,8 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
             hemi_wf.connect(hemi_inputspec1, 'white', ar3_pial, 'in_white')
         else:
             ar3_pial.inputs.no_white = False
-            hemi_wf.connect([(hemi_inputspec1, ar3_pial, [('white', 'orig_pial'),
-                                                          ('white', 'orig_white')])])
+            hemi_wf.connect([(hemi_inputspec1, ar3_pial, [('white_preaparc', 'orig_pial'),
+                                                          ('white_preaparc', 'orig_white')])])
 
         hemi_wf.connect([(hemi_inputspec1, ar3_pial, [('wm', 'in_wm'),
                                                       ('orig', 'in_orig'),
@@ -216,7 +216,7 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
         ar3_wf.connect([(inputspec, hemi_wf, [('{0}_inflated'.format(hemisphere), 'inputspec.inflated'),
                                               ('{0}_smoothwm'.format(hemisphere),
                                                'inputspec.smoothwm'),
-                                              ('{0}_white'.format(hemisphere), 'inputspec.white'),
+                                              ('{0}_white_preaparc'.format(hemisphere), 'inputspec.white'),
                                               ('{0}_cortex_label'.format(hemisphere),
                                                'inputspec.cortex_label'),
                                               ('{0}_orig'.format(hemisphere), 'inputspec.orig'),
@@ -280,10 +280,10 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
     volume_mask.inputs.copy_inputs = True
 
 
-    ar3_wf.connect([(inputspec, volume_mask, [('lh_white', 'lh_white'),
-                                              ('rh_white', 'rh_white')]),
-                    (ar3_lh_wf1, volume_mask, [('outputspec.pial', 'lh_pial')]),
-                    (ar3_rh_wf1, volume_mask, [('outputspec.pial', 'rh_pial')]),
+    ar3_wf.connect([(ar3_lh_wf1, volume_mask, [('outputspec.pial', 'lh_pial')],
+                                              [('outputspec.white', 'lh.white')]),
+                    (ar3_rh_wf1, volume_mask, [('outputspec.pial', 'rh_pial')],
+                                              [('outputspec.white', 'rh.white')])
                     ])
 
     if fsvernum >= 6:
