@@ -549,15 +549,13 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
     aparc_2_aseg.inputs.volmask = True
     aparc_2_aseg.inputs.copy_inputs = True
     aparc_2_aseg.inputs.out_file = "aparc+aseg.mgz"
-    ar3_wf.connect([(inputspec, aparc_2_aseg, [('lh_white', 'lh_white'),
-                                                ('rh_white', 'rh_white'),
-                                                ]),
-                    (ar3_lh_wf1, aparc_2_aseg, [('outputspec.pial', 'lh_pial'),
-                                               ('outputspec.aparc_annot',
-                                                'lh_annotation'),
-                                               ]),
+    ar3_wf.connect([(ar3_lh_wf1, aparc_2_aseg, [('outputspec.pial', 'lh_pial'),
+                                                ('outputspec.white', 'lh_white'),
+                                                ('outputspec.aparc_annot', 
+                                                 'lh_annotation')]),
                     (ar3_rh_wf1, aparc_2_aseg, [('outputspec.pial', 'rh_pial'),
-                                               ('outputspec.aparc_annot',
+                                                ('outputspec.white', 'rh_white'),
+                                                ('outputspec.aparc_annot',
                                                 'rh_annotation'),
                                                ]),
                     (volume_mask, aparc_2_aseg, [('rh_ribbon', 'rh_ribbon'),
@@ -570,9 +568,9 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
         # Relabel Hypointensities
         relabel_hypos = pe.Node(RelabelHypointensities(), name="Relabel_Hypointensities")
         relabel_hypos.inputs.out_file = 'aseg.presurf.hypos.mgz'
-        ar3_wf.connect([(inputspec, relabel_hypos, [('aseg_presurf', 'aseg'),
-                                                    ('lh_white', 'lh_white'),
-                                                    ('rh_white', 'rh_white')])])
+        ar3_wf.connect([(inputspec,  relabel_hypos, [('aseg_presurf', 'aseg')]),
+                        (ar3_lh_wf1, relabel_hypos, [('outputspec.white', 'lh_white')]),
+                        (ar3_rh_wf1, relabel_hypos, [('outputspec.white', 'rh_white')])])                            
         ar3_wf.connect([(relabel_hypos, aparc_2_aseg, [('out_file', 'aseg')])])
 
     aparc_2_aseg_2009 = pe.Node(Aparc2Aseg(), name="Aparc2Aseg_2009")
@@ -580,17 +578,14 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
     aparc_2_aseg_2009.inputs.a2009s = True
     aparc_2_aseg_2009.inputs.copy_inputs = True
     aparc_2_aseg_2009.inputs.out_file = "aparc.a2009s+aseg.mgz"
-    ar3_wf.connect([(inputspec, aparc_2_aseg_2009, [('lh_white', 'lh_white'),
-                                                     ('rh_white', 'rh_white'),
-                                                     ]),
-                    (ar3_lh_wf1, aparc_2_aseg_2009, [('outputspec.pial', 'lh_pial'),
-                                                    ]),
+    ar3_wf.connect([(ar3_lh_wf1, aparc_2_aseg_2009, [('outputspec.pial', 'lh_pial'),
+                                                     ('outputspec.white', 'lh_white')]),
                     (ar3_lh_wf2, aparc_2_aseg_2009, [('outputspec.aparc_a2009s_annot',
                                                       'lh_annotation')]),
                     (ar3_rh_wf2, aparc_2_aseg_2009, [('outputspec.aparc_a2009s_annot',
                                                       'rh_annotation')]),
                     (ar3_rh_wf1, aparc_2_aseg_2009, [('outputspec.pial', 'rh_pial'),
-                                                    ]),
+                                                     ('outputspec.white', 'rh_white')]),
                     (volume_mask, aparc_2_aseg_2009, [('rh_ribbon', 'rh_ribbon'),
                                                       ('lh_ribbon',
                                                        'lh_ribbon'),
@@ -678,15 +673,14 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
     wm_parcellation.inputs.copy_inputs = True
     wm_parcellation.inputs.out_file = "wmparc.mgz"
 
-    ar3_wf.connect([(inputspec, wm_parcellation, [('lh_white', 'lh_white'),
-                                                   ('rh_white', 'rh_white'),
-                                                   ]),
-                    (ar3_lh_wf1, wm_parcellation, [('outputspec.pial', 'lh_pial'),
-                                                  ('outputspec.aparc_annot',
+    ar3_wf.connect([(ar3_lh_wf1, wm_parcellation, [('outputspec.pial', 'lh_pial'),
+                                                   ('outputspec.white', 'lh_white').
+                                                   ('outputspec.aparc_annot',
                                                    'lh_annotation'),
                                                   ]),
                     (ar3_rh_wf1, wm_parcellation, [('outputspec.pial', 'rh_pial'),
-                                                  ('outputspec.aparc_annot',
+                                                   ('outputspec.white', 'rh_white'),
+                                                   ('outputspec.aparc_annot',
                                                    'rh_annotation'),
                                                   ]),
                     (volume_mask, wm_parcellation, [('rh_ribbon', 'rh_ribbon'),
