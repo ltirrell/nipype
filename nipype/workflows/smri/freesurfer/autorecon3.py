@@ -674,9 +674,8 @@ def create_AutoRecon3(name="AutoRecon3", qcache=False, plugin_args=None,
     wm_parcellation.inputs.out_file = "wmparc.mgz"
 
     ar3_wf.connect([(ar3_lh_wf1, wm_parcellation, [('outputspec.pial', 'lh_pial'),
-                                                   ('outputspec.white', 'lh_white').
-                                                   ('outputspec.aparc_annot',
-                                                   'lh_annotation'),
+                                                   ('outputspec.white', 'lh_white'),
+                                                   ('outputspec.aparc_annot','lh_annotation'),
                                                   ]),
                     (ar3_rh_wf1, wm_parcellation, [('outputspec.pial', 'rh_pial'),
                                                    ('outputspec.white', 'rh_white'),
